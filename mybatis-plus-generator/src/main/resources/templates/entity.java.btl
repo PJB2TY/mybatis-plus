@@ -42,7 +42,9 @@ public class ${entity} extends Model<${entity}> {
 public class ${entity} implements Serializable {
 <% } %>
 
+<% if(entitySerialVersionUID){ %>
     private static final long serialVersionUID = 1L;
+<% } %>
 <% /** -----------BEGIN 字段循环遍历----------- **/ %>
 <% for(field in table.fields){ %>
     <%
@@ -93,7 +95,7 @@ public class ${entity} implements Serializable {
     /*逻辑删除注解*/
     %>
     <% if(logicDeleteFieldName!'' == field.name){ %>
-    @Version
+    @TableLogic
     <% } %>
     private ${field.propertyType} ${field.propertyName};
 <% } %>

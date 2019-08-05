@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2011-2020, hubin (jobob@qq.com).
+ * Copyright (c) 2011-2020, baomidou (jobob@qq.com).
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -16,19 +16,19 @@
 package com.baomidou.mybatisplus.core.conditions;
 
 import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
+import com.baomidou.mybatisplus.core.conditions.segments.NormalSegmentList;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.core.toolkit.TableInfoHelper;
 
 import java.util.Objects;
 
 /**
- * <p>
  * 条件构造抽象类
- * </p>
  *
  * @author hubin
  * @since 2018-05-25
@@ -37,13 +37,23 @@ import java.util.Objects;
 public abstract class Wrapper<T> implements ISqlSegment {
 
     /**
-     * <p>
      * 实体对象（子类实现）
-     * </p>
      *
      * @return 泛型 T
      */
     public abstract T getEntity();
+
+    public String getSqlSelect() {
+        return null;
+    }
+
+    public String getSqlSet() {
+        return null;
+    }
+
+    public String getSqlComment() {
+        return null;
+    }
 
     /**
      * 获取 MergeSegments
@@ -52,14 +62,28 @@ public abstract class Wrapper<T> implements ISqlSegment {
 
     /**
      * 获取自定义SQL 简化自定义XML复杂情况
-     * 使用方法
-     * `自定义sql` + ${ew.customSqlSegment}
+     * <p>使用方法</p>
+     * <p>`自定义sql` + ${ew.customSqlSegment}</p>
      * <p>1.逻辑删除需要自己拼接条件 (之前自定义也同样)</p>
      * <p>2.不支持wrapper中附带实体的情况 (wrapper自带实体会更麻烦)</p>
-     * <p>3.用法 ${ew.customSqlSegment} (不需要where标签包裹,切记!)</>
-     * <p>4.ew是wrapper定义别名,可自行替换</>
+     * <p>3.用法 ${ew.customSqlSegment} (不需要where标签包裹,切记!)</p>
+     * <p>4.ew是wrapper定义别名,可自行替换</p>
      */
-    public abstract String getCustomSqlSegment();
+    public String getCustomSqlSegment() {
+        MergeSegments expression = getExpression();
+        if (Objects.nonNull(expression)) {
+            NormalSegmentList normal = expression.getNormal();
+            String sqlSegment = getSqlSegment();
+            if (StringUtils.isNotEmpty(sqlSegment)) {
+                if (normal.isEmpty()) {
+                    return sqlSegment;
+                } else {
+                    return Constants.WHERE + " " + sqlSegment;
+                }
+            }
+        }
+        return StringUtils.EMPTY;
+    }
 
     /**
      * 查询条件为空(包含entity)
