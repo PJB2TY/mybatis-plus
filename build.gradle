@@ -2,7 +2,7 @@ import java.time.LocalDateTime
 
 allprojects {
     group = 'com.baomidou'
-    version = "3.5.2"
+    version = "3.5.2.1-SNAPSHOT"
 }
 
 ext {
@@ -16,8 +16,8 @@ ext {
         mybatisSpringBootStarterVersion = '2.2.2',
         springVersion = '5.3.15',
         springBootVersion = '2.5.3',
-        jsqlparserVersion = '4.4',
-        junitVersion = '5.7.2',
+        jsqlparserVersion = '4.5',
+        junitVersion = '5.9.0',
     ]
 
     lib = [
@@ -49,7 +49,7 @@ ext {
         "spring-test"                : "org.springframework:spring-test:${springVersion}",
         "assertj-core"               : "org.assertj:assertj-core:3.23.1",
         "junit-jupiter"              : "org.junit.jupiter:junit-jupiter:${junitVersion}",
-        "fastjson"                   : "com.alibaba:fastjson:2.0.9",
+        "fastjson"                   : "com.alibaba:fastjson:2.0.10",
         "jackson"                    : "com.fasterxml.jackson.core:jackson-databind:2.13.3",
         "gson"                       : "com.google.code.gson:gson:2.9.0",
         "lagarto"                    : "org.jodd:jodd-lagarto:6.0.6",
@@ -61,7 +61,7 @@ ext {
         "dm"                         : fileTree(dir: 'libs', includes: ["jdbcDriver-18.jar"]),
         "kingbase"                   : fileTree(dir: 'libs', includes: ["kingbase8-8.2.0.jar"]),
         "h2"                         : "com.h2database:h2:2.1.214",
-        "mysql"                      : "mysql:mysql-connector-java:8.0.29",
+        "mysql"                      : "mysql:mysql-connector-java:8.0.30",
         "sqlite"                     : "org.xerial:sqlite-jdbc:3.36.0.3",
         "firebird"                   : "org.firebirdsql.jdbc:jaybird:4.0.6.java8",
         //cache
